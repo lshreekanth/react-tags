@@ -14,7 +14,13 @@ var _reactDndHtml5Backend = require('react-dnd-html5-backend');
 
 var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend);
 
-var _lodash = require('lodash');
+var _noop = require('lodash/noop');
+
+var _noop2 = _interopRequireDefault(_noop);
+
+var _uniq = require('lodash/uniq');
+
+var _uniq2 = _interopRequireDefault(_uniq);
 
 var _Suggestions = require('./Suggestions');
 
@@ -285,7 +291,7 @@ var ReactTags = function (_Component) {
       var tags = pastedText.split(delimiterRegExp);
 
       // Only add unique tags
-      (0, _lodash.uniq)(tags).forEach(function (tag) {
+      (0, _uniq2.default)(tags).forEach(function (tag) {
         return _this2.addTag({ id: tag, text: tag });
       });
     }
@@ -305,7 +311,7 @@ var ReactTags = function (_Component) {
         return;
       }
       if (this.props.autocomplete) {
-        var possibleMatches = this.filteredSuggestions(tag, this.props.suggestions);
+        var possibleMatches = this.filteredSuggestions(tag.text, this.props.suggestions);
 
         if (this.props.autocomplete === 1 && possibleMatches.length === 1 || this.props.autocomplete === true && possibleMatches.length) {
           tag = possibleMatches[0];
@@ -402,13 +408,13 @@ var ReactTags = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: this.state.classNames.tags },
+        !this.props.inline && tagInput,
         _react2.default.createElement(
           'div',
           { className: this.state.classNames.selected },
-          tagItems,
-          this.props.inline && tagInput
-        ),
-        !this.props.inline && tagInput
+          this.props.inline && tagInput,
+          tagItems
+        )
       );
     }
   }]);
@@ -458,12 +464,11 @@ ReactTags.defaultProps = {
   delimiters: [_constants.KEYS.ENTER, _constants.KEYS.TAB],
   autofocus: true,
   inline: true,
-  handleDelete: _lodash.noop,
-  handleAddition: _lodash.noop,
+  handleDelete: _noop2.default,
+  handleAddition: _noop2.default,
   allowDeleteFromEmptyInput: true,
   allowAdditionFromPaste: true,
   resetInputOnDelete: true,
-  minQueryLength: 2,
   autocomplete: false,
   readOnly: false
 };
